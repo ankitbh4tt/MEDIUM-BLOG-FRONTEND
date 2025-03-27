@@ -14,7 +14,7 @@ const Auth:React.FC<AuthProps> = ({type}) => {
         {type==='signin'?<LoginForm/>:<RegisterForm/>}
         </div>
       </div>
-      <div className=" flex justify-center items-center p-10 bg-slate-300 shadow-2xl">
+      <div className=" flex justify-center items-center p-10 bg-slate-300 shadow-2xl rounded-xs">
         <div className="p-10">
           <Quote/>
         </div>
