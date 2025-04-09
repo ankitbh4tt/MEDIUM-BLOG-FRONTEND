@@ -1,7 +1,9 @@
+import Auth from "../components/Auth"
+
 const Signin = () => {
   return (
     <div>
-      Signin
+      <Auth type="signin"/>
     </div>
   )
 }

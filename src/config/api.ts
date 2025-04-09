@@ -1,1 +1,1 @@
-export const BACKEND_URI = `https://backend.bewadagaming31.workers.dev`
+export const BACKEND_URI = `https://backend.bewadagaming31.workers.dev/api/v1/`
