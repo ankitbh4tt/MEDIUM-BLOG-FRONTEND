@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import LabeledInput from './LabeledInput'
 import AuthButton from './AuthButton'
 import React, { useState } from 'react'
@@ -8,6 +8,7 @@ import { toast ,ToastContainer} from 'react-toastify'
 
 const RegisterForm = () => {
   const [formData,setFormData] = useState( {username:"",password:"",email:""})
+  const navigate = useNavigate()
   const handleRegisterSubmit =async ()=>{
     try {
       const response = await axios.post(BACKEND_URI+"user/signup", formData, {
@@ -18,31 +19,32 @@ const RegisterForm = () => {
       })
       const data =response.data
       if(data.username){
-        toast.success(`Hey ${data.username}👋!`, {
+        toast.success(`Welcome ${data.username}👋!`, {
+          position: 'top-right',
+        });
+        sessionStorage.setItem('token',`Bearer `+data.token)
+        navigate('/')
+      }
+      
+    }catch (error) {
+      const axiosError = error as AxiosError<{ message?: string }>; // Match server response shape
+      if (axiosError.response) {
+        // Extract the 'message' field from the server response
+        const errorMessage =
+          axiosError.response.data?.message || 'An error occurred during signup';
+        toast.error(errorMessage, {
+          position: 'top-right',
+        });
+      } else if (axiosError.request) {
+        toast.error('No response from server. Check your network.', {
+          position: 'top-right',
+        });
+      } else {
+        toast.error(axiosError.message || 'Failed to send request.', {
           position: 'top-right',
         });
       }
-    }catch (error) {
-      const axiosError = error as AxiosError<{ error?: string; details?: any }>; // Type the error response
-      if (axiosError.response) {
-        // Server responded with an error (e.g., 400, 401)
-        const errorMessage =
-          axiosError.response.data?.error || 'An error occurred during signup';
-        toast.error(errorMessage, {
-          position: 'top-left',
-        });
-      } else if (axiosError.request) {
-        // No response received (e.g., network error, CORS)
-        toast.error('No response from server. Check your network or server status.', {
-          position: 'top-left',
-        });
-      } else {
-        // Request setup error
-        toast.error(axiosError.message || 'Failed to send request.', {
-          position: 'top-left',
-        });
-      }
-    }
+    } 
   }
   const handleRegInput = (event:React.ChangeEvent<HTMLInputElement>)=>{
     const {name,value} = event.target;

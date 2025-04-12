@@ -23,7 +23,7 @@ const LabeledInput:React.FC<labelInputType> = ({type,label,placeholder,name,hand
       <div className='pb-4 px-4 pt-2 flex flex-col gap-0.5 rounded-l'>
         <div className='font-semibold'>{label}</div>
         <div className='flex'>
-        <input type={inputType} name={name} className='border-1 border-slate-400 rounded-md h-8 p-4 min-w-full' placeholder={placeholder} onChange={(e)=>handleInput(e)}  />
+        <input type={inputType} name={name} className='border-1 border-slate-400 rounded-md h-8 p-4 min-w-full' placeholder={placeholder} onChange={(e)=>handleInput(e)} required />
           {type === "password" && (
             <div id='eyeIcons'>
               {

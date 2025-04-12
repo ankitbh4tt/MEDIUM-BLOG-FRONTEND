@@ -1,9 +1,12 @@
 import React from 'react'
+interface BlogProps {
+  blog:[]
+}
 
-const Blog = () => {
+const Blog:React.FC<BlogProps> = ({blog}) => {
   return (
     <div>
-      Blog
+      
     </div>
   )
 }
