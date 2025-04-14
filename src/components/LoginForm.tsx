@@ -12,6 +12,7 @@ const LoginForm = () => {
   const navigate = useNavigate()
   const handleLoginSubmit =async ()=>{
     try {
+      setIsSubmitting(true)
       const response = await axios.post(`${BACKEND_URI}user/signin`,formData,{
         headers:{
           "Content-Type":"application/json",
@@ -20,10 +21,11 @@ const LoginForm = () => {
 
       const data = response.data
       if(data){
-        toast.success('Logged In Successfully!',{
+        toast.success('Welcome back '+data.name,{
           position:'top-left'
         })
         sessionStorage.setItem('token',`Bearer `+data.token)
+        setIsSubmitting(false)
         if(localStorage.getItem('lastPage')){
           navigate(`${localStorage.getItem('lastPage')}`)
         }else{
@@ -31,12 +33,14 @@ const LoginForm = () => {
         }
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const msg = error.response?.data?.message || 'Something went wrong';
-        toast.error(msg,({
-          position:"top-right"
-        }))
-      }
+        if (axios.isAxiosError(error)) {
+          const msg = error.response?.data?.message || 'Something went wrong';
+          toast.error(msg,({
+            position:"top-right"
+          }))
+        }
+    }finally{
+      setIsSubmitting(false)
     }
   }
   const handleLoginInput = (event:React.ChangeEvent<HTMLInputElement>) =>{
@@ -55,14 +59,7 @@ const LoginForm = () => {
         <div className='mt-2'>
         <LabeledInput type='text' label='Email' name='email' placeholder='example@gmail.com' handleInput={handleLoginInput}/>
         <LabeledInput type='password' label='Password' name='password' handleInput={handleLoginInput} placeholder='Enter Password'/>
-        {
-          isSubmitting?
-            <AuthButton type='login' handleSubmit={handleLoginSubmit}/>
-          :
-            <div className='bg-red-500'>
-              <AuthButton type='login' handleSubmit={handleLoginSubmit}/>
-            </div>
-        }
+          <AuthButton isSubmitting={isSubmitting} type='login' handleSubmit={handleLoginSubmit}/>
         </div>
       </div>
     </div>  

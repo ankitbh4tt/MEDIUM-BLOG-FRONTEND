@@ -8,8 +8,10 @@ import { toast ,ToastContainer} from 'react-toastify'
 
 const RegisterForm = () => {
   const [formData,setFormData] = useState( {username:"",password:"",email:""})
+  const [isSubmitting ,setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const handleRegisterSubmit =async ()=>{
+    setIsSubmitting(true)
     try {
       const response = await axios.post(BACKEND_URI+"user/signup", formData, {
         headers: {
@@ -19,10 +21,11 @@ const RegisterForm = () => {
       })
       const data =response.data
       if(data.username){
-        toast.success(`Welcome ${data.username}👋!`, {
+        toast.success(`Hie ${data.username}👋!`, {
           position: 'top-right',
         });
         sessionStorage.setItem('token',`Bearer `+data.token)
+        setIsSubmitting(false)
         navigate('/')
       }
       
@@ -44,7 +47,9 @@ const RegisterForm = () => {
           position: 'top-right',
         });
       }
-    } 
+    }finally{
+      setIsSubmitting(false)
+    }
   }
   const handleRegInput = (event:React.ChangeEvent<HTMLInputElement>)=>{
     const {name,value} = event.target;
@@ -64,7 +69,7 @@ const RegisterForm = () => {
           <LabeledInput type='text' label='Username' name="username" placeholder='Enter Your Username' handleInput = {handleRegInput}/>
           {<LabeledInput type='text' label='Email' name="email" placeholder='example@gmail.com' handleInput = {handleRegInput} />}
           <LabeledInput type='password' label='Password' name="password" placeholder='Enter Password' handleInput = {handleRegInput}/>
-          <AuthButton type='register' handleSubmit={handleRegisterSubmit}/>
+          <AuthButton type='register' isSubmitting={isSubmitting} handleSubmit={handleRegisterSubmit}/>
         </div>
       </div>
     </div>

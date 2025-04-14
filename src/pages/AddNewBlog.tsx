@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import Navbar from './Navbar'
+import Navbar from '../components/Navbar'
 import axios, { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { BACKEND_URI } from '../config/api'
+import RTE from '../components/RTE/RTE'
 
 interface AxiosErrorType {
   message: string;
@@ -30,9 +31,11 @@ const AddNewBlog = () => {
           },
         });
         const data = result.data;
-        if (data.userId) {
-          toast.info('Write content to post!', { position: 'bottom-right' });
-        }
+        if (!data.auth || !data.userId) {
+          toast.info('Write content to post!', { position: 'top-right' });
+          toast.error('Authentication failed. Please sign in again.', { position: 'top-right' });
+          navigate('/signin');
+        } 
       } catch (error) {
         const axiosError = error as AxiosError<AxiosErrorType>;
         if (axios.isAxiosError(axiosError) && axiosError.response) {
@@ -44,8 +47,8 @@ const AddNewBlog = () => {
           } else if (errorData.message === 'Internal server error during authentication') {
             toast.error('Server error. Please try again later.', { position: 'top-right' });
           } else {
-            toast.error('An unexpected error occurred.', { position: 'top-right' });
-          }
+            console.error('Unexpected error:', axiosError);
+            toast.error('An unexpected error occurred.', { position: 'top-right' });          }
         } else {
           console.error('Something unexpected happened!', error);
           toast.error('An unexpected error occurred.', { position: 'top-right' });
@@ -54,11 +57,12 @@ const AddNewBlog = () => {
     };
 
     checkAuth();
-  }, [navigate]);
+  }, []);
 
   return (
     <div>
         <Navbar page='blog'/>   
+        <RTE/>
     </div>
   )
 }

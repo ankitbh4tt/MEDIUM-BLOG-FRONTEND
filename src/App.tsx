@@ -7,7 +7,7 @@ import Blog from './pages/Blog'
 import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for default styling 
 import Navbar from './components/Navbar'
-import AddNewBlog from './components/AddNewBlog'
+import AddNewBlog from './pages/AddNewBlog'
 import Logout from './pages/Logout'
 
 function App() {
@@ -16,6 +16,7 @@ function App() {
     <>
       <Routes>
         <Route path='/' element={<Blogs/>}/>
+        <Route path='blog/:id' element={<Blog/>} />
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/signin' element={<Signin/>}/>
         <Route path='/newBlog' element={<AddNewBlog/>}/>
