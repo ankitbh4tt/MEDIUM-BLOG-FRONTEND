@@ -68,7 +68,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ title, content, blogid, published, 
   };
 
   return (
-    <div className="bg-white p-4 rounded shadow" onClick={() => handleBlogCardClick(blogid)}>
+    <div className="bg-white p-4 rounded shadow " onClick={() => handleBlogCardClick(blogid)}>
       <article className="overflow-hidden rounded-lg shadow-sm transition hover:shadow-lg">
         <img
           alt=""

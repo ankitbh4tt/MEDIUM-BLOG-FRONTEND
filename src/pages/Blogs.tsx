@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import Blog from './Blog'
 import BlogCard from '../components/BlogCard'
 import Navbar from '../components/Navbar'
+import AllBlogsSkeleton from '../components/AllBlogsSkeleton'
 
 
 
@@ -58,14 +59,19 @@ const Blogs = () => {
   
   return (
     <div>
-      <Navbar/>
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4'>
+      <Navbar page={'home'}/>
+      <div >
         {loading?
-          <div>Data aa rha hai bhaiyaaaa ....</div>
+          <div>
+            <AllBlogsSkeleton/>
+
+          </div>
         :
-          blogs.map((blog)=>(
-              <BlogCard title={blog.title} content={blog.content} blogid={blog.id} published={blog.published} author={blog.authorId} key={blog.id}/>
-          ))
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4'>
+            {blogs.map((blog)=>(
+                <BlogCard title={blog.title} content={blog.content} blogid={blog.id} published={blog.published} author={blog.authorId} key={blog.id}/>
+            ))}
+          </div>
         }
       </div>
 

@@ -8,14 +8,14 @@ import { toast } from 'react-toastify'
 
 const LoginForm = () => {
   const [formData,setFormData] = useState({username:"",password:""})
+  const [isSubmitting,setIsSubmitting] = useState(false)
   const navigate = useNavigate()
   const handleLoginSubmit =async ()=>{
     try {
       const response = await axios.post(`${BACKEND_URI}user/signin`,formData,{
         headers:{
           "Content-Type":"application/json",
-        },
-        withCredentials:true
+        }
       })
 
       const data = response.data
@@ -24,7 +24,11 @@ const LoginForm = () => {
           position:'top-left'
         })
         sessionStorage.setItem('token',`Bearer `+data.token)
-        navigate('/')
+        if(localStorage.getItem('lastPage')){
+          navigate(`${localStorage.getItem('lastPage')}`)
+        }else{
+          navigate('/')
+        }
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -51,7 +55,14 @@ const LoginForm = () => {
         <div className='mt-2'>
         <LabeledInput type='text' label='Email' name='email' placeholder='example@gmail.com' handleInput={handleLoginInput}/>
         <LabeledInput type='password' label='Password' name='password' handleInput={handleLoginInput} placeholder='Enter Password'/>
-          <AuthButton type='login' handleSubmit={handleLoginSubmit}/>
+        {
+          isSubmitting?
+            <AuthButton type='login' handleSubmit={handleLoginSubmit}/>
+          :
+            <div className='bg-red-500'>
+              <AuthButton type='login' handleSubmit={handleLoginSubmit}/>
+            </div>
+        }
         </div>
       </div>
     </div>  

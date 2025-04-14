@@ -11,5 +11,5 @@ const AuthButton:React.FC<btnPropType> = ({type,handleSubmit}) => {
     </div>
   )
 }
-
+  
 export default AuthButton

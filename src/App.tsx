@@ -8,6 +8,7 @@ import { ToastContainer } from 'react-toastify'; // Import ToastContainer
 import 'react-toastify/dist/ReactToastify.css'; // Import CSS for default styling 
 import Navbar from './components/Navbar'
 import AddNewBlog from './components/AddNewBlog'
+import Logout from './pages/Logout'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/signin' element={<Signin/>}/>
         <Route path='/newBlog' element={<AddNewBlog/>}/>
+        <Route path='/logout' element={<Logout/>} />
         {/* <Route path='/blog/:id' element={<Blog />}/> */}
         <Route path='/*' element={<Signin/>} />
       </Routes>
