@@ -21,10 +21,9 @@ function App() {
         <Route path='/signin' element={<Signin/>}/>
         <Route path='/newBlog' element={<AddNewBlog/>}/>
         <Route path='/logout' element={<Logout/>} />
-        {/* <Route path='/blog/:id' element={<Blog />}/> */}
         <Route path='/*' element={<Signin/>} />
       </Routes>
-      <ToastContainer // Add ToastContainer here
+      <ToastContainer 
         position="top-left" // Position of toasts
         autoClose={5000} // Auto-close after 5 seconds
         hideProgressBar={false} // Show progress bar

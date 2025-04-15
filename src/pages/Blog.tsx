@@ -3,16 +3,25 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { BACKEND_URI } from '../config/api'
+import BlogCard from '../components/BlogCard'
+import BlogPage from '../components/BlogPage'
 
 interface ErrorResponse {
   error?: string; // Middleware error
   message?: string; // Route error
 }
 
+
+interface BlogData{
+  blogId:string,
+  title: string;
+  content: string;
+  published:boolean,
+}
 const Blog = () => {
   const params = useParams()
   const blogId = params.id || ''
-  const [blog,setBlog] = useState([])
+  const [blog, setBlog] = useState<BlogData | null>(null); // Fix: Blog | null, not Blog[]
   const [loading,setLoading] = useState(false)
 
   const navigate =  useNavigate()
@@ -31,6 +40,7 @@ const Blog = () => {
         })
         const data = await response.data
         console.log(data)
+        setBlog(data.blog)
         setLoading(false)
       } catch (err) {
         const error = err as AxiosError<ErrorResponse>;
@@ -58,9 +68,23 @@ const Blog = () => {
     }
     handleFetchBlogData()
   },[blogId])
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-3xl mt-10 text-gray-800">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+  if (!blog) {
+    return (
+      <div className="mx-auto max-w-3xl mt-10 text-gray-800">
+        <p>Blog post not found</p>
+      </div>
+    );
+  }
   return (
     <div>
-      kjhfkjsh
+      <BlogPage title={blog.title} content={blog.content} blogId={blog.blogId} published={blog.published} key={blog.blogId}/>
     </div>
   )
 }
