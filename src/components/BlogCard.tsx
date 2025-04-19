@@ -1,6 +1,7 @@
 import axios,{AxiosError} from "axios";
 import React from "react";
 import { BACKEND_URI } from "../config/api";
+import parse from "html-react-parser"
 import { useNavigate } from "react-router-dom";
 
 interface BlogCardProps {
@@ -53,7 +54,7 @@ const BlogCard: React.FC<BlogCardProps> = ({ title, content, blogid, published, 
           </a>
 
           <p className="mt-2 line-clamp-3 text-sm/relaxed text-gray-500">
-            {content.slice(0,120)}...
+            {parse(content.slice(0,120))}...
           </p>
           <p className="text-xs text-gray-400 flex justify-end">SomeoneYouKnow</p>
 

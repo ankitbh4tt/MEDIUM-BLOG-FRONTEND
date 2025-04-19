@@ -5,6 +5,9 @@ import { toast } from 'react-toastify'
 import { BACKEND_URI } from '../config/api'
 import BlogCard from '../components/BlogCard'
 import BlogPage from '../components/BlogPage'
+import Navbar from '../components/Navbar'
+import BlogSkeleton from '../components/BlogSkeleton'
+
 
 interface ErrorResponse {
   error?: string; // Middleware error
@@ -62,7 +65,9 @@ const Blog = () => {
           toast.error(errorMessage, { position: 'top-right' });
         } else {
           toast.error('Failed to load blog post', { position: 'top-right' });
-        }      }finally{
+        }   
+        navigate('/')   
+      }finally{
         setLoading(false)
       }
     }
@@ -70,9 +75,10 @@ const Blog = () => {
   },[blogId])
   if (loading) {
     return (
-      <div className="mx-auto max-w-3xl mt-10 text-gray-800">
-        <p>Loading...</p>
-      </div>
+      <>
+      <Navbar page={'blog'} />
+      <BlogSkeleton/>
+      </>
     );
   }
   if (!blog) {
@@ -84,6 +90,7 @@ const Blog = () => {
   }
   return (
     <div>
+      <Navbar page={'blog'} />
       <BlogPage title={blog.title} content={blog.content} blogId={blog.blogId} published={blog.published} key={blog.blogId}/>
     </div>
   )
